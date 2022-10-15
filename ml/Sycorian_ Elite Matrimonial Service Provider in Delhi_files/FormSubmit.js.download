@@ -1,0 +1,107 @@
+$(document).ready(function() {
+$( "#submitform" ).on( "click", function() {
+	
+	var firstname = $("#firstname").val();
+	var email = $("#email").val();
+	var phone = $("#phone").val();	
+	var query = $("#query").val();
+	
+   if(firstname == "" ){
+	  $(".errorMsg").show().css("background-color", "#ffcccc");
+	  $(".errorMsg").html("Please Enter Name"); 	   
+   }
+   else if(email == "" ){
+	  $(".errorMsg").show().css("background-color", "#ffcccc"); 
+	  $(".errorMsg").html("Please Enter Email ID."); 	   
+   } else if(phone == "" ){
+	  $(".errorMsg").show().css("background-color", "#ffcccc"); 
+	  $(".errorMsg").html("Please Enter Phone"); 	   
+   } else if(query == "" ){
+	  $(".errorMsg").show().css("background-color", "#ffcccc"); 
+	  $(".errorMsg").html("Please Enter Your Query"); 	   
+   }
+   else if(grecaptcha && grecaptcha.getResponse().length == 0){
+	  $(".errorMsg").show().css("background-color", "#ffcccc"); 
+	  $(".errorMsg").html("Please verify the captcha");      
+   }
+   else{
+	   $(".errorMsg").html("");  
+	   
+	   var dataString = 'email='+ email + '&firstname=' + firstname + '&query='+ query + '&phone=' + phone + '&g-recaptcha-response='+ grecaptcha.getResponse() ;
+		$.ajax({
+			type: "POST",
+			url: "CaptchaValidation.php",
+			data: dataString,
+			cache: false,
+			beforeSend: function() 
+			{   $(".errorMsg").show().css("background-color", "#FFFFE0");
+				$(".errorMsg").html("Please Wait...");
+			},
+			success: function(response)
+			{
+				$(".errorMsg").show().css("background-color", "#d5fdd5");
+				$(".errorMsg").html(response);
+				var str = "https://sycorian.com/";				
+				window.location.href = str+"thanks.php";
+			}
+		}); 	   
+   } 
+});
+
+
+$( "#submitreg" ).on( "click", function() {
+	
+	var interaction = $("#interaction").val();
+	var gender = $("#gender").val();
+	var regname = $("#regname").val();	
+	var edu = $("#edu").val();
+	var dob = $("#dob").val();
+	var rl = $("#rl").val();
+	var occ = $("#occ").val();
+	var family = $("#family").val();
+	var cst = $("#cst").val();
+	var address = $("#address").val();
+	var hght = $("#hght").val();
+	var phone = $("#phone").val();
+	var inc = $("#inc").val();
+	var email = $("#email").val();
+	
+   if(regname === "" ){
+	  $(".errorMsg").show().css("background-color", "#ffcccc");
+	  $(".errorMsg").html("Please Enter Name"); 	   
+   }
+   else if(email === "" ){
+	  $(".errorMsg").show().css("background-color", "#ffcccc"); 
+	  $(".errorMsg").html("Please Enter Email ID."); 	   
+   } else if(phone === "" ){
+	  $(".errorMsg").show().css("background-color", "#ffcccc"); 
+	  $(".errorMsg").html("Please Enter Contact No."); 	   
+   } else if(grecaptcha && grecaptcha.getResponse().length === 0){
+	  $(".errorMsg").show().css("background-color", "#ffcccc"); 
+	  $(".errorMsg").html("Please verify the captcha");      
+   }
+   else{
+	   $(".errorMsg").html("");  
+	   
+	   var dataString = 'interaction='+ interaction + '&gender=' + gender + '&regname='+ regname + '&edu=' + edu + '&dob=' + dob + '&rl=' + rl + '&occ=' + occ + '&family=' + family + '&cst=' + cst + '&address=' + address + '&hght=' + hght + '&phone=' + phone + '&inc=' + inc + '&email=' + email +  '&g-recaptcha-response='+ grecaptcha.getResponse() ;
+		$.ajax({
+			type: "POST",
+			url: "CaptchaValidation1.php",
+			data: dataString,
+			cache: false,
+			beforeSend: function() 
+			{   $(".errorMsg").show().css("background-color", "#FFFFE0");
+				$(".errorMsg").html("Please Wait...");
+			},
+			success: function(response)
+			{
+				$(".errorMsg").show().css("background-color", "#d5fdd5");
+				$(".errorMsg").html(response);
+				var str = "https://sycorian.com/";				
+				window.location.href = str+"thanks.php";
+			}
+		}); 	   
+   } 
+});
+
+});

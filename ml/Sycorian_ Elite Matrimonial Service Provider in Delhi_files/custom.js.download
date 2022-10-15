@@ -1,0 +1,300 @@
+jQuery(document).ready(function(){
+	caseStudiesTabDropdown();	
+	menuDropDown();
+	
+	//Tab Navigate for another page
+	var hash = window.location.hash;
+	if (hash != ""){
+		jQuery('.nav-tabs a[href="' + hash + '"]').tab('show');
+	}
+	else{
+		jQuery('.nav-tabs a:first').tab('show');	
+	}
+	
+	//PRELOADER 
+	//jQuery(window).load(function() { // makes sure the whole site is loaded
+		//jQuery('#status').fadeOut(); // will first fade out the loading animation
+		//jQuery('#preloader').delay(100).fadeOut('slow'); // will fade out the white DIV that covers the website.
+		//jQuery('body').delay(100).css({'overflow':'visible'});
+	//});
+	
+	//Why OSI Consulting? Number Counter Script
+	jQuery('.number_container').appear(function() {
+		var count_element = jQuery(".number", this).php();
+		jQuery('.number', this).countTo({
+			from: 0,
+			to: count_element,
+			speed: 2500,
+			refreshInterval: 50,
+		});
+	});	
+	
+	//Search Hover Function
+	jQuery('.search-box').hover(function(){
+		jQuery('.search-box form').toggleClass('expend'); 	
+	}); 
+	
+	//MAIN SLIDER
+	jQuery('.home-slider').slick({
+		dots: true,
+		infinite: true,
+		speed: 500,
+		autoplay: true,
+		autoplaySpeed: 8000,
+		accessibility: false
+		//fade: true,
+		//cssEase: 'linear'
+	});
+	
+	//OSI technology Slider
+	jQuery('ul.technology-list').slick({
+	  dots: false,
+	  infinite: false,
+	  speed: 300,
+	  slidesToShow: 3,
+	  slidesToScroll: 1,
+	  responsive: [
+		{
+		  breakpoint: 992,
+		  settings: {
+			slidesToShow: 2,
+			slidesToScroll: 1,
+			infinite: false,
+			dots: false
+		  }
+		},
+		{
+		  breakpoint: 768,
+		  settings: {
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  }
+		},
+		{
+		  breakpoint: 480,
+		  settings: {
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  }
+		}
+		// You can unslick at a given breakpoint now by adding:
+		// settings: "unslick"
+		// instead of a settings object
+	  ]
+	}); 
+	
+	//Search Hover Function
+	jQuery('.btn-contact').click(function(event){
+		//jQuery(this).toggleClass('expend');
+		event.stopPropagation();
+		jQuery('.contact-menu').toggleClass('expend'); 	
+	}); 
+	
+	jQuery(document).click(function(){
+		jQuery('.contact-menu').removeClass('expend'); 	
+	});
+		
+	//FANCYBOX 
+	jQuery(document).ready(function() {
+		jQuery(".fancybox").fancybox();
+	});	 
+
+	//Scroll top 
+	jQuery('.btn-top').on('click', function (e) {
+		e.preventDefault();
+		$('html,body').animate({
+			scrollTop: 0
+		}, 700);
+	});	
+	window.sr = new scrollReveal();
+	
+  	//Hamburger Menu
+	jQuery('.hamburger-menu').click(function(){
+		jQuery('.main-nav').toggleClass('menu-open');
+		jQuery('body').toggleClass('body-menu-open');
+		jQuery('.wrapper').toggleClass('main-container-slide');	
+	}); 
+	
+	// Custom Browse Buttom
+	if(jQuery("#uploadBtn").length > 0){
+		document.getElementById("uploadBtn").onchange = function () {
+			document.getElementById("uploadFile").value = this.value;
+		};
+	}
+	
+	// Get test settings for - Column Height Equal
+	var byRow = jQuery('body').hasClass('test-rows');
+	// apply matchHeight to each item container's items - Event page- Upcoming Events
+	jQuery('.upcoming-events-list').each(function() {
+		jQuery(this).children('li').matchHeight({
+			byRow: byRow
+		});
+	});
+	jQuery('ul.past-events-list').each(function() {
+		jQuery(this).children('li').matchHeight({
+			byRow: byRow
+		});
+	});
+	
+
+});
+jQuery(window).bind("debouncedresize", function($) {
+	
+});	
+
+jQuery(document).ready(function() {
+   /* Store the window width */
+   var windowWidth = jQuery(window).width();
+   /* Resize Event */
+   jQuery(window).bind("debouncedresize", function() {
+       // Check if the window width has actually changed and it's not just iOS triggering a resize event on scroll
+       if (jQuery(window).width() != windowWidth) {
+		menuDropDown();	
+       }
+       // Otherwise do nothing
+   });
+});
+
+
+
+jQuery(window).resize(function(){	
+	caseStudiesTabDropdown();
+	//menuDropDown();
+});
+jQuery(window).scroll(function() {
+    if (jQuery(this).scrollTop() > 150){  
+        jQuery('body').addClass("sticky");
+    }
+    else{
+        jQuery('body').removeClass("sticky");
+    }
+});	
+//Case Studies Tab Dropdown	
+function caseStudiesTabDropdown(){
+	if (screen.width < 768) {			
+		jQuery('.filter-wrap').each(function(){
+				jQuery(this).find("> span").on("click", function() {
+				jQuery('.filter-wrap').removeClass('drop-open').css('overflow','hidden');
+				jQuery('body').removeClass('filter-open');
+				if(jQuery(this).closest(".filter-wrap").find('ul').css('visibility') == 'hidden'){
+				jQuery(this).closest(".filter-wrap").addClass('drop-open');
+				jQuery('body').addClass('filter-open');
+				jQuery(this).closest(".filter-wrap").css('overflow','inherit');
+				}
+				else{
+				jQuery(this).closest(".filter-wrap").removeClass('drop-open');
+				jQuery('body').removeClass('filter-open');
+				jQuery(this).closest(".filter-wrap").css('overflow','hidden');
+				}
+				
+				});
+				
+				
+				var filterOptions = jQuery(this).children('ul');
+				console.log(filterOptions);
+				jQuery(this).on("click", "li > a", function(event) {
+				event.preventDefault();
+				jQuery(this).closest(".filter-wrap").children('span').php(jQuery(this).php());
+				var liDataValue = jQuery(this).parent().data('value');
+				jQuery(this).closest(".filter-list-wrap").children('ul').data('value',liDataValue);
+				 
+				if(filterOptions.css('opacity') == 0){
+				jQuery(this).closest(".filter-wrap").css('overflow','inherit');
+				jQuery('body').addClass('filter-open');
+				jQuery(".filter-wrap").addClass('drop-open');
+				}
+				else{
+				jQuery(this).closest(".filter-wrap").css('overflow','hidden');
+				jQuery(".filter-wrap").removeClass('drop-open');
+				jQuery('body').removeClass('filter-open');
+				}
+				});
+			});			
+	}
+	else {			 		
+	}		
+}
+
+//Header Mobile Navigation	
+function menuDropDown(){
+	if (screen.width < 992) {			 
+		jQuery('.menu-rht.sumenu-01').hide(300); 
+		jQuery('li.submenu-01 span.open').click(function(){
+			jQuery(this).toggleClass('close');
+			jQuery('li.submenu-02 span.open, li.submenu-03 span.open, li.submenu-04 span.open, li.submenu-05 span.open, li.submenu-06 span.open').removeClass('close');
+			jQuery('.menu-rht.sumenu-02, .menu-rht.sumenu-03, .menu-rht.sumenu-04, .menu-rht.sumenu-05, .menu-rht.sumenu-06').hide(300); 
+			jQuery('.menu-rht.sumenu-01').slideToggle(300); 	
+		}); 
+		jQuery('.menu-rht.sumenu-02').hide(300); 
+		jQuery('li.submenu-02 span.open').click(function(){
+			jQuery(this).toggleClass('close');
+			jQuery('li.submenu-01 span.open, li.submenu-03 span.open, li.submenu-04 span.open, li.submenu-05 span.open, li.submenu-06 span.open').removeClass('close');
+			jQuery('.menu-rht.sumenu-01, .menu-rht.sumenu-03, .menu-rht.sumenu-04, .menu-rht.sumenu-05, .menu-rht.sumenu-06').hide(300); 
+			jQuery('.menu-rht.sumenu-02').slideToggle(300); 	
+		}); 
+		jQuery('.menu-rht.sumenu-03').hide(300); 
+		jQuery('li.submenu-03 span.open').click(function(){
+			jQuery(this).toggleClass('close');
+			jQuery('li.submenu-01 span.open, li.submenu-02 span.open, li.submenu-04 span.open, li.submenu-05 span.open, li.submenu-06 span.open').removeClass('close');
+			jQuery('.menu-rht.sumenu-01, .menu-rht.sumenu-02, .menu-rht.sumenu-04, .menu-rht.sumenu-05, .menu-rht.sumenu-06').hide(300); 
+			jQuery('.menu-rht.sumenu-03').slideToggle(300); 	
+		}); 
+		jQuery('.menu-rht.sumenu-04').hide(300); 
+		jQuery('li.submenu-04 span.open').click(function(){
+			jQuery(this).toggleClass('close');
+			jQuery('li.submenu-01 span.open, li.submenu-02 span.open, li.submenu-03 span.open, li.submenu-05 span.open, li.submenu-06 span.open').removeClass('close');
+			jQuery('.menu-rht.sumenu-01, .menu-rht.sumenu-02, .menu-rht.sumenu-03, .menu-rht.sumenu-05, .menu-rht.sumenu-06').hide(300); 
+			jQuery('.menu-rht.sumenu-04').slideToggle(300); 	
+		}); 
+		jQuery('.menu-rht.sumenu-05').hide(300); 
+		jQuery('li.submenu-05 span.open').click(function(){
+			jQuery(this).toggleClass('close');
+			jQuery('li.submenu-01 span.open, li.submenu-02 span.open, li.submenu-03 span.open, li.submenu-04 span.open, li.submenu-06 span.open').removeClass('close');
+			jQuery('.menu-rht.sumenu-01, .menu-rht.sumenu-02, .menu-rht.sumenu-03, .menu-rht.sumenu-04, .menu-rht.sumenu-06').hide(300); 
+			jQuery('.menu-rht.sumenu-05').slideToggle(300); 	
+		}); 
+		jQuery('.menu-rht.sumenu-06').hide(300); 
+		jQuery('li.submenu-06 span.open').click(function(){
+			jQuery(this).toggleClass('close');
+			jQuery('li.submenu-01 span.open, li.submenu-02 span.open, li.submenu-03 span.open, li.submenu-04 span.open, li.submenu-05 span.open').removeClass('close');
+			jQuery('.menu-rht.sumenu-01, .menu-rht.sumenu-02, .menu-rht.sumenu-03, .menu-rht.sumenu-04, .menu-rht.sumenu-05').hide(300); 
+			jQuery('.menu-rht.sumenu-06').slideToggle(300); 	
+		}); 
+				
+		
+		jQuery('.menu-1 > ul.dropmenu').hide(300); 
+		jQuery('.menu-1 > span.open').click(function(){
+			jQuery(this).toggleClass('close');
+			jQuery('.menu-2 > span.open, .menu-3 > span.open').removeClass('close');
+			jQuery('.dropmenu.about, .dropmenu.case-studies').hide(300); 
+			jQuery('.dropmenu.service').slideToggle(300); 	
+		});
+		jQuery('.dropmenu.about').hide(300); 
+		jQuery('.menu-2 > span.open').click(function(){
+			jQuery(this).toggleClass('close');
+			jQuery('.menu-1 > span.open, .menu-3 > span.open').removeClass('close');
+			jQuery('.dropmenu.service, .dropmenu.case-studies').hide(300);
+			jQuery('.dropmenu.about').slideToggle(300); 	
+		});
+		jQuery('.dropmenu.case-studies').hide(300); 
+		jQuery('.menu-3 > span.open').click(function(){
+			jQuery(this).toggleClass('close');
+			jQuery('.menu-1 > span.open, .menu-2 > span.open').removeClass('close');
+			jQuery('.dropmenu.service, .dropmenu.about').hide(300);
+			jQuery('.dropmenu.case-studies').slideToggle(300); 	
+		});		
+	}
+	else { 		 		
+	}		
+}
+
+
+
+
+
+
+
+
+
+
+
